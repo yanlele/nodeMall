@@ -104,6 +104,9 @@
   import NavHeader from '@/components/header'
   import NavFooter from '@/components/footer'
   import NavBread from '@/components/NavBread'
+  import axios from 'axios'
+
+
   export default{
 
     name: 'GoodsList',

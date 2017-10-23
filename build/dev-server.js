@@ -29,7 +29,7 @@ var goodsData=require('./../mock/goods.json');
 router.get('/goods',function(req,res,next){
   res.json(goodsData);
 });
-app.user(router);
+app.use(router);
 //结束mock代码
 
 const compiler = webpack(webpackConfig)
