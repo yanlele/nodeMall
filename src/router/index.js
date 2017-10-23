@@ -6,11 +6,16 @@ import GoodsList from '../views/GoodsList.vue'
 Vue.use(Router)
 
 export default new Router({
+  mode:'history',
   routes: [
     {
-      path: '/goods/:goodsId',
+      path: '/goods/:goodsId/user/:name',
       name: 'GoodsList',
-      component: GoodsList
+      components: {
+        default:GoodsList,
+        title:Title,
+        img:Image
+      }
     }
   ]
 })
