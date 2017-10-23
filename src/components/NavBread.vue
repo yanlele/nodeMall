@@ -4,6 +4,7 @@
       <nav class="nav-breadcrumb">
         <a href="/">Home</a>
         <slot name="bread"></slot>
+        <slot name="other"></slot>
       </nav>
     </div>
   </div>
