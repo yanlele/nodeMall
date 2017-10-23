@@ -15,11 +15,11 @@
               <use xlink:href="#icon-arrow-short"></use>
             </svg>
           </a>
-          <a href="javascript:void(0)" class="filterby stopPop">Filter by</a>
+          <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
         </div>
         <div class="accessory-result">
           <!-- filter -->
-          <div class="filter stopPop" id="filter">
+          <div class="filter stopPop" id="filter" :class="{'filterby-show':filterBy}">
             <dl class="filter-price">
               <dt>Price:</dt>
               <dd><a href="javascript:void(0)" :class="{'cur':priceChecked=='all'}" @click="priceChecked='all'">All</a></dd>
@@ -51,6 +51,8 @@
         </div>
       </div>
     </div>
+
+    <div class="modal" v-show="overLayFlag" @click="hideFilterPop"></div>
 
 
     <NavFooter></NavFooter>
@@ -86,7 +88,9 @@
             endPrice:'2000.00',
           }
         ],
-        priceChecked:'all'
+        priceChecked:'all',
+        filterBy:false,
+        overLayFlag:false
       }
     },
 
@@ -107,6 +111,16 @@
           var res = res.data;
           this.goodsList = res.result;
         })
+      },
+
+      showFilterPop(){
+        this.filterBy=true;
+        this.overLayFlag=true;
+      },
+
+      hideFilterPop(){
+        this.filterBy=false;
+        this.overLayFlag=false;
       }
     }
   }
@@ -114,5 +128,13 @@
 
 
 <style scoped rel="stylesheet/less" lang="less">
-
+.modal{
+  position: fixed;
+  left: 0;
+  top:0;
+  z-index: 2;
+  width:100%;
+  height:100%;
+  background-color:rgba(0,0,0,.5) ;
+}
 </style>

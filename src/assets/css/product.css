@@ -314,6 +314,7 @@
   right: 0;
   -webkit-transition: right .5s ease-out;
   transition: right .5s ease-out;
+  z-index: 3;
 }
 
 @media only screen and (max-width: 767px) {
@@ -373,7 +374,7 @@
 }
 
 /** search resule **/
-/** 搜索结果页 **/
+/** 鎼滅储缁撴灉椤� **/
 .search-result-wrap {
   background: #f0f0f0;
 }
