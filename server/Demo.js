@@ -6,11 +6,13 @@ console.log(`i am jack ,i say ${user.userName}`);
 
 /*创建一个server*/
 let http=require('http');
+let url=require('url');
+let util=require('util');
 let server= http.createServer((req,res)=>{
   res.statusCode=200;
   res.setHeader('Conent-Type','text/plain; charset=utf-8');
 
-  res.end('Hello , node.js')
+  res.end(util.inspect(url.parse(req.url)))
 });
 
 server.listen(3000,'127.0.0.1',()=>{
