@@ -1,26 +1,41 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var Goods = require('../models/goods');
+var express=require('express');
+var router=express.Router();
+var mongoose=require('mongoose');
+var Goods=require('../models/goods');
 
-//连接MongoDB数据库
-mongoose.connect('mongodb://127.0.0.1:27017/001_nodeMall');
+//链接数据库
+mongoose.connect('mongodb://127.0.0.1/001_nodeMall');
 
-mongoose.connection.on("connected", function () {
-  console.log("MongoDB connected success.")
+mongoose.connection.on('connected',()=>{
+  console.log('MoogoDB connect success')
 });
 
-mongoose.connection.on("error", function () {
-  console.log("MongoDB connected fail.")
+mongoose.connection.on('error',()=>{
+  console.log('MoogoDB connect fail')
 });
 
-mongoose.connection.on("disconnected", function () {
-  console.log("MongoDB connected disconnected.")
+mongoose.connection.on('disconnected',()=>{
+  console.log('MoogoDB connect disconnected')
 });
 
+router.get('/',function(req,res,next){
+  Goods.find({},function(err,doc){
+    if(err){
+      res.json({
+        status:'1',
+        message:err.message,
+      })
+    }else{
+      res.json({
+        status:'0',
+        message:'成功',
+        result:{
+          count:doc.length,
+          list:doc
+        }
+      })
+    }
+  })
+});
 
-router.get('/',(req,res,next)=>{
-  var sort=req.param('sort');
-
-  Goods
-})
+module.exports = router;
