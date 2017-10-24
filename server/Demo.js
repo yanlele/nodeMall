@@ -12,7 +12,9 @@ let server= http.createServer((req,res)=>{
   res.statusCode=200;
   res.setHeader('Conent-Type','text/plain; charset=utf-8');
 
-  res.end(util.inspect(url.parse(req.url)))
+  console.log(`url: ${req.url}`);
+
+  res.end(util.inspect(url.parse('http://127.0.0.1:3000/index.html?a=123#tag')))
 });
 
 server.listen(3000,'127.0.0.1',()=>{
