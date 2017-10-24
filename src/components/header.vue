@@ -35,7 +35,10 @@
         </div>
       </div>
     </div>
-    <div class="md-modal modal-msg md-modal-transition md-show">
+
+
+
+    <div class="md-modal modal-msg md-modal-transition">
       <div class="md-modal-inner">
         <div class="md-top">
           <div class="md-title">Login in</div>
@@ -66,7 +69,9 @@
         </div>
       </div>
     </div>
-    <div class="md-overlay"></div>
+
+    <!--<div class="md-overlay"></div>-->
+
   </header>
 </template>
 
@@ -90,7 +95,7 @@
           userName:this.userName,
           userPwd:this.userPwd
         }).then((res)=>{
-          let res=res.data;
+          var res=res.data;
           if(res.status=='0'){
             this.errorTip=false;
             //todo
