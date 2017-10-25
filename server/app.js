@@ -26,6 +26,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/*这个地方配置路由*/
 app.use('/', index);
 app.use('/users', users);
 app.use('/goods', goods);
