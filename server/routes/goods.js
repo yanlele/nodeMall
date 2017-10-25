@@ -19,20 +19,31 @@ mongoose.connection.on('disconnected', () => {
 });
 
 //正式功能接口
-router.get('/',(req,res,next)=>{
-  Goods.find({},(err,doc)=>{
-    if(err){
+router.get('/', (req, res, next) => {
+  let page=req.param('page');
+  let pageSize=req.param('pageSize');
+  let sort = req.param('sort');
+  let skip=(page-1)*pageSize;
+  let params = {};
+
+  let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
+  goodsModel.sort({
+    salePrice:sort
+  });
+
+  goodsModel.exec({}, (err, doc) => {
+    if (err) {
       res.json({
-        status:'1',
-        message:err.message
+        status: '1',
+        message: err.message
       })
-    }else{
+    } else {
       res.json({
-        status:'0',
-        message:'成功',
-        result:{
-          count:doc.length,
-          list:doc
+        status: '0',
+        message: '成功',
+        result: {
+          count: doc.length,
+          list: doc
         }
       })
     }
@@ -59,8 +70,8 @@ router.get('/test', function (req, res, next) {
       res.json({
         success: true,
         message: '查询成功',
-        name:param.name,
-        age:param.age,
+        name: param.name,
+        age: param.age,
         data: {
           list: data
         }
