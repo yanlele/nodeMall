@@ -25,10 +25,10 @@ const app = express()
 
 //开始mock代码
 var router=express.Router();
-var goodsData=require('./../mock/goods.json');
+/*var goodsData=require('./../mock/goods.json');
 router.get('/goods',function(req,res,next){
   res.json(goodsData);
-});
+});*/
 app.use(router);
 //结束mock代码
 

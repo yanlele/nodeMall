@@ -20,9 +20,9 @@ mongoose.connection.on('disconnected', () => {
 
 //正式功能接口
 router.get('/', (req, res, next) => {
-  let page=parseInt(req.param('page'));
-  let pageSize=parseInt(req.param('pageSize'));
-  let sort = req.param('sort');
+  let page=parseInt(req.param('page'))||1;
+  let pageSize=parseInt(req.param('pageSize'))||8;
+  let sort = req.param('sort')||1;
   let skip=(page-1)*pageSize;
   let params = {};
 
