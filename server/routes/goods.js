@@ -19,23 +19,35 @@ mongoose.connection.on('disconnected',()=>{
 });
 
 router.get('/',function(req,res,next){
-  Goods.find({},function(err,doc){
+  console.log(req.param());
+
+  res.json({
+    success:true,
+    message:'成功',
+    data:{
+      name:'yanle',
+      age:25
+    }
+  })
+});
+
+router.get('/test',function(req,res,next){
+  Goods.find({},(err,data)=>{
     if(err){
       res.json({
-        status:'1',
-        message:err.message,
+        success:false,
+        message:err.message
       })
     }else{
       res.json({
-        status:'0',
-        message:'成功',
-        result:{
-          count:doc.length,
-          list:doc
+        success:true,
+        message:'查询成功',
+        data:{
+          list:data
         }
       })
     }
   })
-});
+})
 
 module.exports = router;
