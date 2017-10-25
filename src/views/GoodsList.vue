@@ -22,7 +22,8 @@
           <div class="filter stopPop" id="filter" :class="{'filterby-show':filterBy}">
             <dl class="filter-price">
               <dt>Price:</dt>
-              <dd><a href="javascript:void(0)" :class="{'cur':priceChecked=='all'}" @click="priceChecked='all'">All</a>
+              <dd><a href="javascript:void(0)" :class="{'cur':priceChecked=='all'}"
+                     @click="setPriceFilter('all')">All</a>
               </dd>
               <dd v-for="(price,index) in priceFilter">
                 <a href="javascript:void(0)" @click="setPriceFilter(index)" :class="{'cur':priceChecked==index}">{{price.startPrice}}
@@ -48,7 +49,8 @@
                   </div>
                 </li>
               </ul>
-              <div class="load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30">
+              <div class="load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy"
+                   infinite-scroll-distance="30">
                 加载中...
               </div>
 
@@ -83,6 +85,10 @@
         priceFilter: [
           {
             startPrice: '0.00',
+            endPrice: '100.00',
+          },
+          {
+            startPrice: '100.00',
             endPrice: '500.00',
           },
           {
@@ -91,7 +97,7 @@
           },
           {
             startPrice: '1000.00',
-            endPrice: '2000.00',
+            endPrice: '5000.00',
           }
         ],
         priceChecked: 'all',
@@ -122,7 +128,7 @@
           page: this.page,
           pageSize: this.pageSize,
           sort: this.sortFlag ? 1 : -1,
-          priceLevel:this.priceChecked
+          priceLevel: this.priceChecked
         }
         axios.get('/goods', {
           params: param
@@ -130,7 +136,7 @@
           var res = res.data;
           if (res.status == '0') {
             if (flag) {
-              this.goodsList = [...this.goodsList,...res.result.list];
+              this.goodsList = [...this.goodsList, ...res.result.list];
               if (res.result.count == 0) {
                 this.busy = true
               } else {
@@ -138,7 +144,7 @@
               }
             } else {
               this.goodsList = res.result.list;
-              this.busy=false;
+              this.busy = false;
             }
           } else {
             this.goodsList = [];
@@ -152,9 +158,9 @@
       },
       setPriceFilter(index){
         this.priceChecked = index;
+        console.log(this.priceChecked);
         this.page = 1;
-        this.getGoodsList(true);
-
+        this.getGoodsList();
 
         this.hideFilterPop();
       },
@@ -194,7 +200,7 @@
     background-color: rgba(0, 0, 0, .5);
   }
 
-  .load-more{
+  .load-more {
     text-align: center;
   }
 </style>
