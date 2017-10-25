@@ -22,11 +22,31 @@ mongoose.connection.on('disconnected', () => {
 router.get('/', (req, res, next) => {
   let page=parseInt(req.param('page'))||1;
   let pageSize=parseInt(req.param('pageSize'))||8;
+  let priceLevel=req.param('priceLevel')||'all';
   let sort = req.param('sort')||1;
   let skip=(page-1)*pageSize;
   let params = {};
+  let priceGt='',priceLte='';
+  if(priceLevel!='all'){
+    switch(priceLevel){
+      case '0':priceGt=0;priceLte=100;break;
+      case '1':priceGt=100;priceLte=500;break;
+      case '2':priceGt=500;priceLte=1000;break;
+      case '3':priceGt=1000;priceLte=5000;break;
+    }
+    params={
+      salePrice:{
+        $gt:priceGt,//最大值为priceGt
+        $lte:priceLte//最小值为priceLte
+      }
+    }
+  }
+
+
+
 
   let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
+  //按照什么规则排序1、升序   2、降序
   goodsModel.sort({
     salePrice:sort
   });

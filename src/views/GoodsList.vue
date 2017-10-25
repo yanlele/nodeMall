@@ -48,6 +48,10 @@
                   </div>
                 </li>
               </ul>
+              <div class="load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30">
+                加载中...
+              </div>
+
             </div>
           </div>
         </div>
@@ -94,6 +98,7 @@
         filterBy: false,
         overLayFlag: false,
         sortFlag: true,
+        busy: true,
 
         page: 1,
         pageSize: 8
@@ -112,18 +117,29 @@
 
 
     methods: {
-      getGoodsList(){
+      getGoodsList(flag){
         var param = {
           page: this.page,
           pageSize: this.pageSize,
-          sort:this.sortFlag?1:-1
+          sort: this.sortFlag ? 1 : -1,
+          priceLevel:this.priceChecked
         }
-        axios.get('/goods',{
-            params:param
+        axios.get('/goods', {
+          params: param
         }).then((res) => {
           var res = res.data;
           if (res.status == '0') {
-            this.goodsList = res.result.list;
+            if (flag) {
+              this.goodsList = [...this.goodsList,...res.result.list];
+              if (res.result.count == 0) {
+                this.busy = true
+              } else {
+                this.busy = false
+              }
+            } else {
+              this.goodsList = res.result.list;
+              this.busy=false;
+            }
           } else {
             this.goodsList = [];
           }
@@ -132,7 +148,23 @@
       sortGoods(){
         this.sortFlag = !this.sortFlag;
         this.page = 1;
-        this.getGoodsList();
+        this.getGoodsList(true);
+      },
+      setPriceFilter(index){
+        this.priceChecked = index;
+        this.page = 1;
+        this.getGoodsList(true);
+
+
+        this.hideFilterPop();
+      },
+
+      loadMore(){
+        this.busy = true;
+        setTimeout(() => {
+          this.page++;
+          this.getGoodsList(true);
+        }, 500);
       },
 
 
@@ -145,10 +177,7 @@
         this.filterBy = false;
         this.overLayFlag = false;
       },
-      setPriceFilter(index){
-        this.priceChecked = index;
-        this.hideFilterPop();
-      }
+
     }
   }
 </script>
@@ -163,5 +192,9 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .5);
+  }
+
+  .load-more{
+    text-align: center;
   }
 </style>
