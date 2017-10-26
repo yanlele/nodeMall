@@ -42,9 +42,6 @@ router.get('/', (req, res, next) => {
     }
   }
 
-
-
-
   let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
   //按照什么规则排序1、升序   2、降序
   goodsModel.sort({

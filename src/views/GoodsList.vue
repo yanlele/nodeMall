@@ -51,7 +51,7 @@
               </ul>
               <div class="load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy"
                    infinite-scroll-distance="30">
-                加载中...
+                <img src="./../assets/loading-svg/loading-bubbles.svg" v-show="loading">
               </div>
 
             </div>
@@ -105,6 +105,7 @@
         overLayFlag: false,
         sortFlag: true,
         busy: true,
+        loading:false,
 
         page: 1,
         pageSize: 8
@@ -124,20 +125,22 @@
 
     methods: {
       getGoodsList(flag){
-        var param = {
+        let param = {
           page: this.page,
           pageSize: this.pageSize,
           sort: this.sortFlag ? 1 : -1,
           priceLevel: this.priceChecked
-        }
+        };
+        this.loading=true;
         axios.get('/goods', {
           params: param
         }).then((res) => {
           var res = res.data;
-          if (res.status == '0') {
+          this.loading=false;
+          if (res.status === '0') {
             if (flag) {
               this.goodsList = [...this.goodsList, ...res.result.list];
-              if (res.result.count == 0) {
+              if (res.result.count === 0) {
                 this.busy = true
               } else {
                 this.busy = false
