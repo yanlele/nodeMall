@@ -111,36 +111,62 @@ router.post('/addCart', function (req, res, next) {
     } else {
       console.log(`userDoc:  ${userDoc}`);
       if (userDoc) {
-        Goods.findOne({
-          productId: productId
-        }, function (err1, doc) {
-          if (err1) {
-            res.status(200).json({
-              status: '1',
-              message: err1.message
-            })
-          } else {
-            if (doc) {
-              doc.productNum = 1;
-              doc.checked = 1;
-              userDoc.cartList.push(doc);
-              userDoc.save(function (err2, doc2) {
-                if (err1) {
-                  res.status(200).json({
-                    status: '1',
-                    message: err2.message
-                  })
-                } else {
-                  res.status(200).json({
-                    status: '0',
-                    message: '添加购物车成功',
-                    result: 'success'
-                  })
-                }
+        let goodsItem='';
+
+        userDoc.cartList.forEach((item,index)=>{
+          if(item.productId===productId){
+            goodsItem=item;
+            item.productNum++;
+          }
+        });
+
+        if(goodsItem){
+          userDoc.save(function (err1, doc2) {
+            if (err1) {
+              res.status(200).json({
+                status: '1',
+                message: err2.message
+              })
+            } else {
+              res.status(200).json({
+                status: '0',
+                message: '添加购物车成功',
+                result: 'success'
               })
             }
-          }
-        })
+          })
+        }else{
+          Goods.findOne({
+            productId: productId
+          }, function (err1, doc) {
+            if (err1) {
+              res.status(200).json({
+                status: '1',
+                message: err1.message
+              })
+            } else {
+              if (doc) {
+                doc.productNum = 1;
+                doc.checked = 1;
+                userDoc.cartList.push(doc);
+                userDoc.save(function (err2, doc2) {
+                  if (err1) {
+                    res.status(200).json({
+                      status: '1',
+                      message: err2.message
+                    })
+                  } else {
+                    res.status(200).json({
+                      status: '0',
+                      message: '添加购物车成功',
+                      result: 'success'
+                    })
+                  }
+                })
+              }
+            }
+          })
+        }
       }
     }
   })
