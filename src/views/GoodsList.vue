@@ -26,7 +26,8 @@
                      @click="setPriceFilter('all')">All</a>
               </dd>
               <dd v-for="(price,index) in priceFilter">
-                <a href="javascript:void(0)" @click="setPriceFilter(index)" :class="{'cur':priceChecked==index}">{{price.startPrice}}
+                <a href="javascript:void(0)" @click="setPriceFilter(index)"
+                   :class="{'cur':priceChecked==index}">{{price.startPrice}}
                   - {{price.endPrice}}</a>
               </dd>
             </dl>
@@ -44,7 +45,7 @@
                     <div class="name">{{item.productName}}</div>
                     <div class="price">{{item.salePrice}}</div>
                     <div class="btn-area">
-                      <a href="javascript:;" class="btn btn--m">加入购物车</a>
+                      <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
                     </div>
                   </div>
                 </li>
@@ -105,7 +106,7 @@
         overLayFlag: false,
         sortFlag: true,
         busy: true,
-        loading:false,
+        loading: false,
 
         page: 1,
         pageSize: 8
@@ -131,12 +132,12 @@
           sort: this.sortFlag ? 1 : -1,
           priceLevel: this.priceChecked
         };
-        this.loading=true;
+        this.loading = true;
         axios.get('/goods', {
           params: param
         }).then((res) => {
           var res = res.data;
-          this.loading=false;
+          this.loading = false;
           if (res.status === '0') {
             if (flag) {
               this.goodsList = [...this.goodsList, ...res.result.list];
@@ -174,6 +175,17 @@
           this.page++;
           this.getGoodsList(true);
         }, 500);
+      },
+      addCart(productId){
+        axios.post('/goods/addCart',{
+          productId:productId
+        }).then((res)=>{
+          if(res.data.status===0){
+            alert(res.data.message);
+          }else{
+            alert(res.data.message);
+          }
+        })
       },
 
 

@@ -94,7 +94,7 @@ router.get('/', (req, res, next) => {
  * productId
  *
  */
-router.post('/goods/addCart', function (req, res, next) {
+router.post('/addCart', function (req, res, next) {
   //如果是get请求，参数放在url里面的情况，接受数据的方式是req.param(),但是如果参数是post请求，接受参数的方式就是req.body，获取到的是一个对象
   let userId = '100000077', productId = req.body.productId;
   var User = require('../models/user');
@@ -123,8 +123,8 @@ router.post('/goods/addCart', function (req, res, next) {
             if (doc) {
               doc.productNum = 1;
               doc.checked = 1;
-              User.cartList.push(doc);
-              User.save(function (err2, doc2) {
+              userDoc.cartList.push(doc);
+              userDoc.save(function (err2, doc2) {
                 if (err1) {
                   res.status(200).json({
                     status: '1',
