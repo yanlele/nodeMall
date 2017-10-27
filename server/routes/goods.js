@@ -89,7 +89,7 @@ router.get('/', (req, res, next) => {
 
 
 /**
- * 购物车逻辑
+ * 添加购物车逻辑
  * 接受参数
  * productId
  *
@@ -111,16 +111,16 @@ router.post('/addCart', function (req, res, next) {
     } else {
       console.log(`userDoc:  ${userDoc}`);
       if (userDoc) {
-        let goodsItem='';
+        let goodsItem = '';
 
-        userDoc.cartList.forEach((item,index)=>{
-          if(item.productId===productId){
-            goodsItem=item;
+        userDoc.cartList.forEach((item, index) => {
+          if (item.productId === productId) {
+            goodsItem = item;
             item.productNum++;
           }
         });
 
-        if(goodsItem){
+        if (goodsItem) {
           userDoc.save(function (err1, doc2) {
             if (err1) {
               res.status(200).json({
@@ -135,7 +135,7 @@ router.post('/addCart', function (req, res, next) {
               })
             }
           })
-        }else{
+        } else {
           Goods.findOne({
             productId: productId
           }, function (err1, doc) {

@@ -20,8 +20,8 @@
         <div class="navbar-menu-container">
           <!--<a href="/" class="navbar-link">我的账户</a>-->
           <span class="navbar-link"></span>
-          <a href="javascript:void(0)" class="navbar-link">Login</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="javascript:void(0)" class="navbar-link">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:void(0)"  class="navbar-link" @click="loginModalFlag=!loginModalFlag">Login</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:void(0)"  class="navbar-link">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <div class="navbar-cart-container" style="display: inline;">
             <span class="navbar-cart-count"></span>
             <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -35,7 +35,7 @@
     </div>
 
 
-    <div class="md-modal modal-msg md-modal-transition">
+    <div class="md-modal modal-msg md-modal-transition" :class="{'md-show':loginModalFlag}">
       <div class="md-modal-inner">
         <div class="md-top">
           <div class="md-title">Login in</div>
@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <!--<div class="md-overlay"></div>-->
+    <div class="md-overlay" v-if="loginModalFlag"></div>
 
   </header>
 </template>
@@ -83,19 +83,26 @@
       return {
         userName: '',
         userPwd: '',
-        errorTip: false
+        errorTip: false,
+        loginModalFlag:false,
+        isLogin:false
       }
     },
 
     methods: {
       login(){
+        if(!this.userName||!this.userPwd){
+            this.errorTip=true;
+            return ;
+        }
         axios.post('/users/login', {
           userName: this.userName,
           userPwd: this.userPwd
         }).then((res) => {
           var res = res.data;
-          if (res.status == '0') {
+          if (res.status === '0') {
             this.errorTip = false;
+            this.loginModalFlag=false;
             //todo
           } else {
             this.errorTip = true;
