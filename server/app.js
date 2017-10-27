@@ -26,6 +26,33 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//登录拦截
+app.use(function(req,res,next){
+  if(req.cookies.userId){
+    //有userId,说明用户 已经登录，放行即可
+    next();
+  }else{
+    /*
+     放行登录和登出接口,以及商品列表接口
+     req.originalUrl是截取的整个url,所以在拦截'/goods'的时候，需要使用一些其他的办法
+     req.path  可以拿到我们的请求路径，而且可以不管参数等内容
+    * */
+    // console.log(req.path);
+    // console.log(req.originalUrl);
+    if(req.originalUrl==='/users/login'||req.originalUrl==='/users/logout'||req.path==='/goods/list'){
+      next();
+    }else{
+      //拦截其余的所有接口
+      res.json({
+        status:'10001',
+        message:'当前未登录',
+        result:''
+      })
+    }
+  }
+});
+
+
 /*这个地方配置路由*/
 app.use('/', index);
 app.use('/users', users);

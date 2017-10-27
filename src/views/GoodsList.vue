@@ -133,7 +133,7 @@
           priceLevel: this.priceChecked
         };
         this.loading = true;
-        axios.get('/goods', {
+        axios.get('/goods/list', {
           params: param
         }).then((res) => {
           var res = res.data;

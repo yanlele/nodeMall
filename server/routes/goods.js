@@ -27,7 +27,7 @@ mongoose.connection.on('disconnected', () => {
  * priceLevel          价格等级，不传表示全部（按照价格区间来查询）
  * sort  排序规则       为0 就是倒叙，为1就是升序
  */
-router.get('/', (req, res, next) => {
+router.get('/list', (req, res, next) => {
   let page = parseInt(req.param('page')) || 1;
   let pageSize = parseInt(req.param('pageSize')) || 8;
   let priceLevel = req.param('priceLevel') || 'all';
