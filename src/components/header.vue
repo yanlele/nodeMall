@@ -12,30 +12,27 @@
             d="M9.599 25.594c-1.769 0-3.203 1.434-3.203 3.203s1.434 3.203 3.203 3.203c1.769 0 3.203-1.434 3.203-3.203s-1.434-3.203-3.203-3.203zM9.599 30.717c-1.060 0-1.92-0.86-1.92-1.92s0.86-1.92 1.92-1.92c1.060 0 1.92 0.86 1.92 1.92s-0.86 1.92-1.92 1.92z"></path>
     </symbol>
     <div class="navbar">
-      <div class="navbar-left-container">
+      <div class="navbar-left-container" style="display: inline">
         <a href="/">
           <img class="navbar-brand-logo" src="/static/logo.png"></a>
       </div>
-      <div class="navbar-right-container" style="display: flex;">
+      <div class="navbar-right-container" style="display: inline-block;height: 100px;float: right;line-height: 100px;">
         <div class="navbar-menu-container">
           <!--<a href="/" class="navbar-link">我的账户</a>-->
           <span class="navbar-link"></span>
-          <a href="javascript:void(0)" class="navbar-link">Login</a>
-          <a href="javascript:void(0)" class="navbar-link">Logout</a>
-          <div class="navbar-cart-container">
+          <a href="javascript:void(0)" class="navbar-link">Login</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:void(0)" class="navbar-link">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="navbar-cart-container" style="display: inline;">
             <span class="navbar-cart-count"></span>
             <a class="navbar-link navbar-cart-link" href="/#/cart">
-              <!--                <svg class="navbar-cart-logo">
-                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
-                              </svg>-->
-              购物车
-
+              <svg class="navbar-cart-logo" style="width: 61px;height: 44px;">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
+              </svg>
             </a>
-          </div>
+          </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
       </div>
     </div>
-
 
 
     <div class="md-modal modal-msg md-modal-transition">
@@ -52,7 +49,8 @@
             <ul>
               <li class="regi_form_input">
                 <i class="icon IconPeople"></i>
-                <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input regi_login_input_left"
+                <input type="text" tabindex="1" name="loginname" v-model="userName"
+                       class="regi_login_input regi_login_input_left"
                        placeholder="User Name" data-type="loginname">
               </li>
               <li class="regi_form_input noMargin">
@@ -91,16 +89,16 @@
 
     methods: {
       login(){
-        axios.post('/users/login',{
-          userName:this.userName,
-          userPwd:this.userPwd
-        }).then((res)=>{
-          var res=res.data;
-          if(res.status=='0'){
-            this.errorTip=false;
+        axios.post('/users/login', {
+          userName: this.userName,
+          userPwd: this.userPwd
+        }).then((res) => {
+          var res = res.data;
+          if (res.status == '0') {
+            this.errorTip = false;
             //todo
-          }else{
-            this.errorTip=true;
+          } else {
+            this.errorTip = true;
           }
         })
       }
