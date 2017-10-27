@@ -9,8 +9,8 @@
       <div class="container">
         <div class="filter-nav">
           <span class="sortby">Sort by:</span>
-          <a href="javascript:void(0)" class="default cur" >Default</a>
-          <a href="javascript:void(0)" class="price"  @click="sortGoods">Price
+          <a href="javascript:void(0)" class="default cur">Default</a>
+          <a href="javascript:void(0)" class="price" @click="sortGoods">Price
             <svg class="icon icon-arrow-short" :class="{'sort-up':!sortFlag}">
               <use xlink:href="#icon-arrow-short"></use>
             </svg>
@@ -71,6 +71,22 @@
         <a href="javascript:" class="btn btn--m" @click="mdShow=false">关闭</a>
       </div>
     </modal>
+
+
+    <modal :mdShow="mdShowCart" @close="closeModal">
+      <p slot="message">
+        <svg class="icon-status-ok" style="width: 61px;height: 44px;">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
+        </svg>
+        <span>加入购物车成功</span>
+      </p>
+      <div slot="btnGroup">
+        <a href="javascript:" class="btn btn--m" @click="mdShowCart=false">继续购物</a>
+        <router-link href="javascript:" class="btn btn--m" to="/cart">查看购物车</router-link>
+      </div>
+    </modal>
+
+
     <NavFooter></NavFooter>
   </div>
 </template>
@@ -115,7 +131,8 @@
         sortFlag: true,
         busy: true,
         loading: false,
-        mdShow:false,
+        mdShow: false,
+        mdShowCart: false,
 
         page: 1,
         pageSize: 8
@@ -191,15 +208,18 @@
         axios.post('/goods/addCart', {
           productId: productId
         }).then((res) => {
-          if (res.data.status === 0) {
-            alert(res.data.message);
+          if (res.data.status === '0') {
+            this.mdShowCart=true;
           } else {
-            this.mdShow=true;
+            this.mdShow = true;
           }
         })
       },
+
+      //这个方式是弹框叉叉按钮关闭弹窗
       closeModal(){
-          this.mdShow=false
+        this.mdShow = false;
+        this.mdShowCart=false;
       },
 
 
@@ -233,21 +253,21 @@
     text-align: center;
   }
 
-  .sort-up{
+  .sort-up {
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
     -o-transform: rotate(180deg);
     transform: rotate(180deg);
 
-    -webkit-transition: all .3s ;
-    -moz-transition: all .3s ;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
     -ms-transition: all .3s;
-    -o-transition: all .3s ;
-    transition: all .3s ;
+    -o-transition: all .3s;
+    transition: all .3s;
   }
 
-  .btn:hover{
+  .btn:hover {
     background-color: #ffe5e6;
     -webkit-transition: all .3s ease-out;
     -moz-transition: all .3s ease-out;
