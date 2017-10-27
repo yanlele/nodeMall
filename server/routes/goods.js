@@ -18,26 +18,46 @@ mongoose.connection.on('disconnected', () => {
   console.log('MoogoDB connect disconnected')
 });
 
-//正式功能接口
+/**
+ * 商品列表功能
+ * /goods
+ * 接受参数如下：
+ * page
+ * pageSize
+ * priceLevel          价格等级，不传表示全部（按照价格区间来查询）
+ * sort  排序规则       为0 就是倒叙，为1就是升序
+ */
 router.get('/', (req, res, next) => {
-  let page=parseInt(req.param('page'))||1;
-  let pageSize=parseInt(req.param('pageSize'))||8;
-  let priceLevel=req.param('priceLevel')||'all';
-  let sort = req.param('sort')||1;
-  let skip=(page-1)*pageSize;
+  let page = parseInt(req.param('page')) || 1;
+  let pageSize = parseInt(req.param('pageSize')) || 8;
+  let priceLevel = req.param('priceLevel') || 'all';
+  let sort = req.param('sort') || 1;
+  let skip = (page - 1) * pageSize;
   let params = {};
-  let priceGt='',priceLte='';
-  if(priceLevel!='all'){
-    switch(priceLevel){
-      case '0':priceGt=0;priceLte=100;break;
-      case '1':priceGt=100;priceLte=500;break;
-      case '2':priceGt=500;priceLte=1000;break;
-      case '3':priceGt=1000;priceLte=5000;break;
+  let priceGt = '', priceLte = '';
+  if (priceLevel != 'all') {
+    switch (priceLevel) {
+      case '0':
+        priceGt = 0;
+        priceLte = 100;
+        break;
+      case '1':
+        priceGt = 100;
+        priceLte = 500;
+        break;
+      case '2':
+        priceGt = 500;
+        priceLte = 1000;
+        break;
+      case '3':
+        priceGt = 1000;
+        priceLte = 5000;
+        break;
     }
-    params={
-      salePrice:{
-        $gt:priceGt,//最大值为priceGt
-        $lte:priceLte//最小值为priceLte
+    params = {
+      salePrice: {
+        $gt: priceGt,//最大值为priceGt
+        $lte: priceLte//最小值为priceLte
       }
     }
   }
@@ -45,7 +65,7 @@ router.get('/', (req, res, next) => {
   let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
   //按照什么规则排序1、升序   2、降序
   goodsModel.sort({
-    salePrice:sort
+    salePrice: sort
   });
 
   goodsModel.exec({}, (err, doc) => {
@@ -63,6 +83,65 @@ router.get('/', (req, res, next) => {
           list: doc
         }
       })
+    }
+  })
+});
+
+
+/**
+ * 购物车逻辑
+ * 接受参数
+ * productId
+ *
+ */
+router.post('/goods/addCart', function (req, res, next) {
+  //如果是get请求，参数放在url里面的情况，接受数据的方式是req.param(),但是如果参数是post请求，接受参数的方式就是req.body，获取到的是一个对象
+  let userId = '100000077', productId = req.body.productId;
+  var User = require('../models/user');
+
+  //find()是获取所有数据   findOne()只拿到查询到的第一条数据
+  User.findOne({
+    userId: userId
+  }, function (err, userDoc) {
+    if (err) {
+      res.status(200).json({
+        status: '1',
+        message: err.message
+      })
+    } else {
+      console.log(`userDoc:  ${userDoc}`);
+      if (userDoc) {
+        Goods.findOne({
+          productId: productId
+        }, function (err1, doc) {
+          if (err1) {
+            res.status(200).json({
+              status: '1',
+              message: err1.message
+            })
+          } else {
+            if (doc) {
+              doc.productNum = 1;
+              doc.checked = 1;
+              User.cartList.push(doc);
+              User.save(function (err2, doc2) {
+                if (err1) {
+                  res.status(200).json({
+                    status: '1',
+                    message: err2.message
+                  })
+                } else {
+                  res.status(200).json({
+                    status: '0',
+                    message: '添加购物车成功',
+                    result: 'success'
+                  })
+                }
+              })
+            }
+          }
+        })
+      }
     }
   })
 });
