@@ -33,6 +33,11 @@ router.post('/login', function (req, res, next) {
           path: '/',
           maxAge: 1000 * 60 * 60
         });
+
+        res.cookie('userName', doc.userName, {
+          path: '/',
+          maxAge: 1000 * 60 * 60
+        });
         //用户信息保存到session
         // req.session.user=doc;
 
@@ -43,10 +48,10 @@ router.post('/login', function (req, res, next) {
             userName: doc.userName
           }
         })
-      }else{
+      } else {
         res.status(200).json({
-          status:'1',
-          message:'登录失败，用户名或者密码输入失误'
+          status: '1',
+          message: '登录失败，用户名或者密码输入失误'
         })
       }
     }
@@ -56,17 +61,38 @@ router.post('/login', function (req, res, next) {
 /**
  * 登出功能
  */
-router.post('/logout',function(req,res,next){
-  res.cookie('userId','',{
-    path:'/',
-    maxAge:-1
+router.post('/logout', function (req, res, next) {
+  res.cookie('userId', '', {
+    path: '/',
+    maxAge: -1
   });
 
   res.status(200).json({
-    status:'0',
-    message:'登出成功'
+    status: '0',
+    message: '登出成功'
   })
 });
+
+/*
+ * 登录校验
+ * */
+router.get('/checkLogin', function (req, res, next) {
+  if (req.cookies.userId) {
+    res.status(200).json({
+      status: '0',
+      message: '',
+      result:{
+        userName:req.cookies.userName
+      }
+    })
+  }else{
+    res.status(200).json({
+      status:'1',
+      message:'未登录',
+      result:''
+    })
+  }
+})
 
 
 /**
@@ -83,18 +109,18 @@ router.get('/test', function (req, res, next) {
   console.log(req.cookies.CNZZDATA1261788850);
 
   User.findOne(param).then((doc) => {
-    if(doc){
+    if (doc) {
       res.status(200).json({
-        status:'0',
-        message:'登录成功',
-        result:{
-          userName:doc.userName
+        status: '0',
+        message: '登录成功',
+        result: {
+          userName: doc.userName
         }
       })
-    }else{
+    } else {
       res.status(401).json({
-        status:'1',
-        message:'登录失败，用户名或者密码输入失误'
+        status: '1',
+        message: '登录失败，用户名或者密码输入失误'
       })
     }
   }).catch((err) => {
