@@ -19,9 +19,9 @@
       <div class="navbar-right-container" style="display: inline-block;height: 100px;float: right;line-height: 100px;">
         <div class="navbar-menu-container">
           <!--<a href="/" class="navbar-link">我的账户</a>-->
-          <span class="navbar-link"></span>
-          <a href="javascript:void(0)"  class="navbar-link" @click="loginModalFlag=!loginModalFlag">Login</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="javascript:void(0)"  class="navbar-link">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="navbar-link" v-if="nickName">用户：{{nickName}} &nbsp;|</span>
+          <a href="javascript:void(0)" v-if="!nickName" class="navbar-link" @click="loginModalFlag=!loginModalFlag">Login</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:void(0)" v-if="nickName" class="navbar-link">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <div class="navbar-cart-container" style="display: inline;">
             <span class="navbar-cart-count"></span>
             <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -85,7 +85,8 @@
         userPwd: '',
         errorTip: false,
         loginModalFlag:false,
-        isLogin:false
+        isLogin:false,
+        nickName:''
       }
     },
 
@@ -104,6 +105,7 @@
             this.errorTip = false;
             this.loginModalFlag=false;
             //todo
+            this.nickName=res.result.userName;
           } else {
             this.errorTip = true;
           }

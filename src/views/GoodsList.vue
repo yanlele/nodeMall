@@ -9,8 +9,8 @@
       <div class="container">
         <div class="filter-nav">
           <span class="sortby">Sort by:</span>
-          <a href="javascript:void(0)" class="default cur">Default</a>
-          <a href="javascript:void(0)" class="price" @click="sortGoods">Price
+          <a href="javascript:void(0)" class="default " :class="{'cur':defaultSort}" @click="sortDefault">Default</a>
+          <a href="javascript:void(0)" class="price" :class="{'cur':priceSort}" @click="sortGoods">Price
             <svg class="icon icon-arrow-short">
               <use xlink:href="#icon-arrow-short"></use>
             </svg>
@@ -158,8 +158,17 @@
       sortGoods(){
         this.sortFlag = !this.sortFlag;
         this.page = 1;
+        this.defaultSort = false;
+        this.priceSort = true;
         this.getGoodsList(true);
       },
+
+      sortDefault(){
+        this.defaultSort = true;
+        this.priceSort = false;
+        this.getGoodsList(false)
+      },
+
       setPriceFilter(index){
         this.priceChecked = index;
         console.log(this.priceChecked);
@@ -177,12 +186,12 @@
         }, 500);
       },
       addCart(productId){
-        axios.post('/goods/addCart',{
-          productId:productId
-        }).then((res)=>{
-          if(res.data.status===0){
+        axios.post('/goods/addCart', {
+          productId: productId
+        }).then((res) => {
+          if (res.data.status === 0) {
             alert(res.data.message);
-          }else{
+          } else {
             alert(res.data.message);
           }
         })
