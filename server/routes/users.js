@@ -79,6 +79,9 @@ router.get('/test', function (req, res, next) {
     userPwd: 123456
   };
 
+  //获取cookie的方法
+  console.log(req.cookies.CNZZDATA1261788850);
+
   User.findOne(param).then((doc) => {
     if(doc){
       res.status(200).json({
