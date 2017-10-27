@@ -11,7 +11,7 @@
           <span class="sortby">Sort by:</span>
           <a href="javascript:void(0)" class="default cur" >Default</a>
           <a href="javascript:void(0)" class="price"  @click="sortGoods">Price
-            <svg class="icon icon-arrow-short">
+            <svg class="icon icon-arrow-short" :class="{'sort-up':!sortFlag}">
               <use xlink:href="#icon-arrow-short"></use>
             </svg>
           </a>
@@ -63,7 +63,14 @@
 
     <div class="modal" v-show="overLayFlag" @click="hideFilterPop"></div>
 
-
+    <modal :mdShow="mdShow" @close="closeModal">
+      <p slot="message">
+        请先登录，否则无法加入到购物车中！
+      </p>
+      <div slot="btnGroup">
+        <a href="javascript:" class="btn btn--m" @click="mdShow=false">关闭</a>
+      </div>
+    </modal>
     <NavFooter></NavFooter>
   </div>
 </template>
@@ -74,6 +81,7 @@
   import NavHeader from '@/components/header'
   import NavFooter from '@/components/footer'
   import NavBread from '@/components/NavBread'
+  import Modal from '@/components/Modal'
   import axios from 'axios'
 
   export default{
@@ -107,6 +115,7 @@
         sortFlag: true,
         busy: true,
         loading: false,
+        mdShow:false,
 
         page: 1,
         pageSize: 8
@@ -116,7 +125,8 @@
     components: {
       NavHeader,
       NavFooter,
-      NavBread
+      NavBread,
+      Modal
     },
 
     mounted(){
@@ -184,9 +194,12 @@
           if (res.data.status === 0) {
             alert(res.data.message);
           } else {
-            alert(res.data.message);
+            this.mdShow=true;
           }
         })
+      },
+      closeModal(){
+          this.mdShow=false
       },
 
 
@@ -218,5 +231,28 @@
 
   .load-more {
     text-align: center;
+  }
+
+  .sort-up{
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+
+    -webkit-transition: all .3s ;
+    -moz-transition: all .3s ;
+    -ms-transition: all .3s;
+    -o-transition: all .3s ;
+    transition: all .3s ;
+  }
+
+  .btn:hover{
+    background-color: #ffe5e6;
+    -webkit-transition: all .3s ease-out;
+    -moz-transition: all .3s ease-out;
+    -ms-transition: all .3s ease-out;
+    -o-transition: all .3s ease-out;
+    transition: all .3s ease-out;
   }
 </style>
