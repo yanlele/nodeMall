@@ -29,7 +29,7 @@ router.post('/login', function (req, res, next) {
     } else {
       if (doc) {
         //保存到cookie
-        res.cookie('UserId', doc.userId, {
+        res.cookie('userId', doc.userId, {
           path: '/',
           maxAge: 1000 * 60 * 60
         });
@@ -50,6 +50,21 @@ router.post('/login', function (req, res, next) {
         })
       }
     }
+  })
+});
+
+/**
+ * 登出功能
+ */
+router.post('/logout',function(req,res,next){
+  res.cookie('userId','',{
+    path:'/',
+    maxAge:-1
+  });
+
+  res.status(200).json({
+    status:'0',
+    message:'登出成功'
   })
 });
 

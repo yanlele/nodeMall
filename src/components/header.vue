@@ -21,7 +21,7 @@
           <!--<a href="/" class="navbar-link">我的账户</a>-->
           <span class="navbar-link" v-if="nickName">用户：{{nickName}} &nbsp;|</span>
           <a href="javascript:void(0)" v-if="!nickName" class="navbar-link" @click="loginModalFlag=!loginModalFlag">Login</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="javascript:void(0)" v-if="nickName" class="navbar-link">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="javascript:void(0)" v-if="nickName" class="navbar-link" @click="logOut">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <div class="navbar-cart-container" style="display: inline;">
             <span class="navbar-cart-count"></span>
             <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -84,17 +84,17 @@
         userName: '',
         userPwd: '',
         errorTip: false,
-        loginModalFlag:false,
-        isLogin:false,
-        nickName:''
+        loginModalFlag: false,
+        isLogin: false,
+        nickName: ''
       }
     },
 
     methods: {
       login(){
-        if(!this.userName||!this.userPwd){
-            this.errorTip=true;
-            return ;
+        if (!this.userName || !this.userPwd) {
+          this.errorTip = true;
+          return;
         }
         axios.post('/users/login', {
           userName: this.userName,
@@ -103,11 +103,19 @@
           var res = res.data;
           if (res.status === '0') {
             this.errorTip = false;
-            this.loginModalFlag=false;
+            this.loginModalFlag = false;
             //todo
-            this.nickName=res.result.userName;
+            this.nickName = res.result.userName;
           } else {
             this.errorTip = true;
+          }
+        })
+      },
+      logOut(){
+        axios.post('/users/logout').then((response) => {
+          let res = response.data;
+          if (res.status === '0') {
+            this.nickName=''
           }
         })
       }
