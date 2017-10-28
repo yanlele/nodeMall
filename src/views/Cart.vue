@@ -242,6 +242,7 @@
           }
         });
       },
+      //编辑购物车功能
       editCart(flag, item){
         if (flag == 'add') {
           item.productNum++;
