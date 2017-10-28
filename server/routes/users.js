@@ -92,7 +92,33 @@ router.get('/checkLogin', function (req, res, next) {
       result:''
     })
   }
-})
+});
+
+/*购物车信息加载
+*
+* */
+router.get('/cartList',function(req,res,next){
+  var userId=req.cookies.userId;
+  User.findOne({userId:userId},function(err,doc){
+    if(err){
+      res.status(500).json(err);
+    }else{
+      if(doc){
+        res.status(200).json({
+          status:'0',
+          message:'查询购物车列表成功',
+          result:doc.cartList
+        })
+      }else{
+        res.status(200).json({
+          status:'1',
+          message:'没有商品加入购物车',
+          result:''
+        })
+      }
+    }
+  })
+});
 
 
 /**

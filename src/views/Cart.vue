@@ -190,22 +190,22 @@
     },
     computed: {
       checkAllFlag(){
-        return this.checkedCount == this.cartList.length;
+        return this.checkedCount === this.cartList.length;
       },
       checkedCount(){
         var i = 0;
         this.cartList.forEach((item) => {
-          if (item.checked == '1') i++;
-        })
+          if (item.checked === '1') i++;
+        });
         return i;
       },
       totalPrice(){
         var money = 0;
         this.cartList.forEach((item) => {
-          if (item.checked == '1') {
+          if (item.checked === '1') {
             money += parseFloat(item.salePrice) * parseInt(item.productNum);
           }
-        })
+        });
         return money;
       }
     },
@@ -269,7 +269,7 @@
         var flag = !this.checkAllFlag;
         this.cartList.forEach((item) => {
           item.checked = flag ? '1' : '0';
-        })
+        });
         axios.post("/users/editCheckAll", {
           checkAll: flag
         }).then((response) => {
