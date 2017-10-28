@@ -81,38 +81,69 @@ router.get('/checkLogin', function (req, res, next) {
     res.status(200).json({
       status: '0',
       message: '',
-      result:{
-        userName:req.cookies.userName
+      result: {
+        userName: req.cookies.userName
       }
     })
-  }else{
+  } else {
     res.status(200).json({
-      status:'1',
-      message:'未登录',
-      result:''
+      status: '1',
+      message: '未登录',
+      result: ''
     })
   }
 });
 
 /*购物车信息加载
-*
-* */
-router.get('/cartList',function(req,res,next){
-  var userId=req.cookies.userId;
-  User.findOne({userId:userId},function(err,doc){
+ *
+ * */
+router.get('/cartList', function (req, res, next) {
+  var userId = req.cookies.userId;
+  User.findOne({userId: userId}, function (err, doc) {
+    if (err) {
+      res.status(500).json(err);
+    } else {
+      if (doc) {
+        res.status(200).json({
+          status: '0',
+          message: '查询购物车列表成功',
+          result: doc.cartList
+        })
+      } else {
+        res.status(200).json({
+          status: '1',
+          message: '没有商品加入购物车',
+          result: ''
+        })
+      }
+    }
+  })
+});
+
+/*购物车删除功能*/
+router.post('/cartDel', function (req, res, next) {
+  var userId = req.cookies.userId, productId = req.body.productId;
+  User.update({userId: userId}, {
+    //$pull是删除的功能
+    $pull: {
+      'cartList': {
+        productId: productId
+      }
+    }
+  },function(err,doc){
     if(err){
       res.status(500).json(err);
     }else{
       if(doc){
         res.status(200).json({
           status:'0',
-          message:'查询购物车列表成功',
-          result:doc.cartList
+          message:'删除成功',
+          result:''
         })
       }else{
         res.status(200).json({
           status:'1',
-          message:'没有商品加入购物车',
+          message:'商品不存在',
           result:''
         })
       }

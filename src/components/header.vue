@@ -109,7 +109,6 @@
           let res=response.data;
           if(res.status==='0'){
             this.nickName=res.result.userName;
-            console.log()
           }
         });
       },
