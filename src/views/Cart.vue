@@ -216,19 +216,23 @@
       Modal
     },
     methods: {
+      //初始化页面的商品数据
       init(){
         axios.get("/users/cartList").then((response) => {
           let res = response.data;
           this.cartList = res.result;
         });
       },
+      //关闭确认删除的模态框
       closeModal(){
         this.modalConfirm = false;
       },
+      //保存删除当前的商品对象和打开确认模态框
       delCartConfirm(item){
         this.delItem = item;
         this.modalConfirm = true;
       },
+      //删除购物车中的数据
       delCart(){
         axios.post("/users/cartDel", {
           productId: this.delItem.productId
@@ -266,6 +270,7 @@
           }
         })
       },
+      //全选功能
       toggleCheckAll(){
         var flag = !this.checkAllFlag;
         this.cartList.forEach((item) => {
