@@ -157,4 +157,40 @@ router.get('/test', function (req, res, next) {
   });
 });
 
+router.post('/edit',(req,res,next)=>{
+  var userId='100000077';
+  var checkAll=req.body.checkAll?"1":0;
+  User.findOne({
+    userId:userId
+  },function(err,user){
+    if(err){
+      res.status(500).json(err.message);
+    }else{
+      if(user){
+        user.cartList.forEach((item,index)=>{
+          item.checked=checkAll;
+        });
+        user.save((err1,doc)=>{
+          if(err1){
+            res.status(500).json(err.message);
+          }else{
+            res.status(200).json({
+              status: '0',
+              message: '保存成功',
+            })
+          }
+        })
+      }else{
+        res.status(200).json({
+          status: '1',
+          message: '修改失败'
+        })
+      }
+
+
+    }
+  })
+});
+
+
 module.exports = router;

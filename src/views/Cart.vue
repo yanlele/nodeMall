@@ -238,7 +238,7 @@
           productId: this.delItem.productId
         }).then((response) => {
           let res = response.data;
-          if (res.status == '0') {
+          if (res.status === '0') {
             this.modalConfirm = false;
 /*            var delCount = this.delItem.productNum;
             this.$store.commit("updateCartCount", -delCount);*/
@@ -248,15 +248,15 @@
       },
       //编辑购物车功能
       editCart(flag, item){
-        if (flag == 'add') {
+        if (flag === 'add') {
           item.productNum++;
-        } else if (flag == 'minu') {
+        } else if (flag === 'minu') {
           if (item.productNum <= 1) {
             return;
           }
           item.productNum--;
         } else {
-          item.checked = item.checked == "1" ? '0' : '1';
+          item.checked = item.checked === "1" ? '0' : '1';
         }
 
         axios.post("/users/cartEdit", {
@@ -265,8 +265,8 @@
           checked: item.checked
         }).then((response) => {
           let res = response.data;
-          if (res.status == "0") {
-            this.$store.commit("updateCartCount", flag == "add" ? 1 : -1);
+          if (res.status === "0") {
+//            this.$store.commit("updateCartCount", flag === "add" ? 1 : -1);
           }
         })
       },
@@ -280,7 +280,7 @@
           checkAll: flag
         }).then((response) => {
           let res = response.data;
-          if (res.status == '0') {
+          if (res.status === '0') {
             console.log("update suc");
           }
         })
