@@ -130,21 +130,21 @@ router.post('/cartDel', function (req, res, next) {
         productId: productId
       }
     }
-  },function(err,doc){
-    if(err){
+  }, function (err, doc) {
+    if (err) {
       res.status(500).json(err);
-    }else{
-      if(doc){
+    } else {
+      if (doc) {
         res.status(200).json({
-          status:'0',
-          message:'删除成功',
-          result:''
+          status: '0',
+          message: '删除成功',
+          result: ''
         })
-      }else{
+      } else {
         res.status(200).json({
-          status:'1',
-          message:'商品不存在',
-          result:''
+          status: '1',
+          message: '商品不存在',
+          result: ''
         })
       }
     }
@@ -152,38 +152,45 @@ router.post('/cartDel', function (req, res, next) {
 });
 
 
-/**
- * 这里留下了一个非常坑的代码纠正逻辑
- * 使用findOne({param},(err,data)={})  这种方式中的err是返回的异常，如果数据库中没有查询到数据，要对data进行校验
- */
-router.get('/test', function (req, res, next) {
-  let param = {
-    userName: 'tom',
-    userPwd: 123456
-  };
+/*控制购物车的修改
+* 入参
+* productId
+* productNum
+* */
+router.post('/cartEdit', function (req, res, next) {
+  let userId = req.cookies.userId,
+    productId = req.body.productId,
+    productNum = req.body.productNum;
 
-  //获取cookie的方法
-  console.log(req.cookies.CNZZDATA1261788850);
-
-  User.findOne(param).then((doc) => {
-    if (doc) {
-      res.status(200).json({
-        status: '0',
-        message: '登录成功',
-        result: {
-          userName: doc.userName
-        }
-      })
+  //修改数据库信息的操作方法
+  User.update({
+    "userId":userId,
+    "cartList.productId":productId
+  },{
+    "cartList.$.productNum":productNum,
+  },function(err,doc){
+    if (err) {
+      res.status(500).json(err);
     } else {
-      res.status(401).json({
-        status: '1',
-        message: '登录失败，用户名或者密码输入失误'
-      })
+      if (doc) {
+        res.status(200).json({
+          status: '0',
+          message: '更新成功',
+          result: ''
+        })
+      } else {
+        res.status(200).json({
+          status: '1',
+          message: '更新失败',
+          result: ''
+        })
+      }
     }
-  }).catch((err) => {
-    res.status(500).json(err);
-  });
+  })
 });
+
+
+
 
 
 module.exports = router;
