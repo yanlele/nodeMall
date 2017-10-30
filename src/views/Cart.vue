@@ -185,6 +185,7 @@
     mounted(){
       this.init();
     },
+    //定制局部过滤器
     filters: {
       currency: currency
     },
