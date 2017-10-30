@@ -60,6 +60,7 @@
             <div class="addr-list-wrap">
               <div class="addr-list">
                 <ul>
+                  <!--这里是经典的地址切换功能实现-->
                   <li v-for="(item,index) in addressListFilter" v-bind:class="{'check':checkIndex==index}" @click="checkIndex=index;selectedAddrId=item.addressId">
                     <dl>
                       <dt>{{item.userName}}</dt>
@@ -157,6 +158,7 @@
           this.init();
       },
       computed:{
+        //设置默认显示3条数据
         addressListFilter(){
           return this.addressList.slice(0,this.limit);
         }
@@ -176,6 +178,7 @@
                   this.selectedAddrId = this.addressList[0].addressId;
               });
           },
+          //展开更多的地址信息
           expand(){
               if(this.limit==3){
                 this.limit = this.addressList.length;
