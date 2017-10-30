@@ -247,6 +247,51 @@ router.get('/addressList',function(req,res,next){
   })
 });
 
+/*设置默认地址
+* 入参
+* addressId
+* */
+router.post('/setDefault',function(req,res,next){
+  var userId=req.cookies.userId;
+  var addressId=req.body.addressId;
+
+  if(!addressId){
+    res.status(200).json({
+      status:'1003',
+      message:'没有 addressId'
+    })
+  }
+
+  User.findOne({
+    userId:userId
+  },function(err,doc){
+    if(err){
+      res.status(200).json(err.message);
+    }else{
+      var addressList=doc.addressList;
+      addressList.forEach((item)=>{
+        if(item.addressId===addressId){
+          item.isDefault=true;
+        }else{
+          item.isDefault=false;
+        }
+      });
+
+      doc.save(function(err1,doc1){
+        if(err){
+          res.status(200).json(err.message);
+        }else{
+          res.status(200).json({
+            status:'0',
+            message:'保存成功',
+            result:''
+          })
+        }
+      })
+    }
+  })
+});
+
 
 
 
