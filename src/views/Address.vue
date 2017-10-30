@@ -2,7 +2,7 @@
     <div>
       <nav-header></nav-header>
       <nav-bread>
-        <span>Address</span>
+        <span slot="bread">Address</span>
       </nav-bread>
       <div class="checkout-page">
         <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -136,10 +136,10 @@
 <style>
 </style>
 <script>
-  import NavHeader from './../components/NavHeader'
-  import NavFooter from './../components/NavFooter'
+  import NavHeader from './../components/header'
+  import NavFooter from './../components/footer'
   import NavBread from './../components/NavBread'
-  import Modal from './../components/Modal'
+  import Modal from './../components/modal.vue'
   import {currency} from './../util/currency'
   import axios from 'axios'
   export default{
