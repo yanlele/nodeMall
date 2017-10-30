@@ -229,6 +229,23 @@ router.post("/editCheckAll", function (req,res,next) {
   });
 });
 
+/*查询地址接口*/
+router.get('/addressList',function(req,res,next){
+  let userId=req.cookies.userId;
+  User.findOne({
+    userId:userId
+  },function(err,doc){
+    if(err){
+      res.status(200).json(err.message)
+    }else{
+      res.status(200).json({
+        status:'0',
+        message:'查询地址成功',
+        result:doc.addressList
+      })
+    }
+  })
+});
 
 
 
