@@ -286,6 +286,7 @@
           }
         })
       },
+      //如果没有选择商品，不允许跳转到结账地址页面的
       checkOut(){
         if (this.checkedCount > 0) {
           this.$router.push({
