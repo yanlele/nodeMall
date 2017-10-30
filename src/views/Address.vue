@@ -168,6 +168,7 @@
         Modal
       },
       methods:{
+          //初始化地址渲染
           init(){
               axios.get("/users/addressList").then((response)=>{
                   let res = response.data;
