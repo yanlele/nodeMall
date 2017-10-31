@@ -292,6 +292,31 @@ router.post('/setDefault',function(req,res,next){
   })
 });
 
+/*删除地址接口*/
+router.post('/delAddress',function(req,res,next){
+  let userId=req.cookies.userId;
+  let addressId=req.body.addressId;
+  User.update({
+    userId:userId
+  },{
+    $pull:{
+      addressList:{
+        addressId:addressId
+      }
+    }
+  },function(err,doc){
+    if(err){
+      res.status(500).json(err.message)
+    }else{
+      res.status(200).json({
+        status:'0',
+        message:'删除成功',
+        result:''
+      })
+    }
+  })
+});
+
 
 
 
