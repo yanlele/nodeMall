@@ -38,8 +38,8 @@
     </div>
 </template>
 <script>
-    import NavHeader from './../components/NavHeader'
-    import NavFooter from './../components/NavFooter'
+    import NavHeader from './../components/header.vue'
+    import NavFooter from './../components/footer.vue'
     import NavBread from './../components/NavBread'
     import {currency} from './../util/currency'
     import axios from 'axios'
