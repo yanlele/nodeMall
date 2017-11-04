@@ -382,6 +382,54 @@ router.post('/payMent',function(req,res,next){
   })
 });
 
+/*根据订单ID来查询订单详情*/
+router.get('/orderDetail',function(req,res,next){
+  var userId=req.cookies.userId;
+  var orderId=req.param('orderId');
+  User.findOne({
+    userId:userId
+  },function(err,userInfo){
+    if(err){
+      res.status(200).json(err.message)
+    }else{
+      if(userInfo){
+        var orderList=userInfo.orderList;
+        if(orderList.length>0){
+          var orderTotal=0;
+          orderList.forEach((item,index)=>{
+            if(item.orderId===orderId){
+              orderTotal=item.orderTotal;
+            }
+          });
+
+          if(orderTotal>0){
+            res.status(200).json({
+              status:'0',
+              message:'返回成功',
+              result:{
+                orderId:orderId,
+                orderTotal:orderTotal
+              }
+            })
+          }else{
+            res.status(200).json({
+              status:'120002',
+              message:'没有订单信息',
+              result:''
+            })
+          }
+        }else{
+          res.status(200).json({
+            status:'120001',
+            message:'没有订单信息',
+            result:''
+          })
+        }
+      }
+    }
+  })
+});
+
 
 
 
