@@ -25,19 +25,22 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));//这里是设置publi为静态目录（可以修改的！）
+
+//我们可以通过新添加一个静态目录来存放我们的前端资源文件
+app.use(express.static(path.join(__dirname, 'views')));
 
 //登录拦截
-/*app.use(function (req, res, next) {
+app.use(function (req, res, next) {
   if (req.cookies.userId) {
     //有userId,说明用户 已经登录，放行即可
     next();
   } else {
-    /!*
+    /*
      放行登录和登出接口,以及商品列表接口
      req.originalUrl是截取的整个url,所以在拦截'/goods'的时候，需要使用一些其他的办法
      req.path  可以拿到我们的请求路径，而且可以不管参数等内容
-     * *!/
+     * */
     // console.log(req.path);
     // console.log(req.originalUrl);
     if (req.originalUrl === '/users/login' || req.originalUrl === '/users/logout' || req.path === '/goods/list') {
@@ -51,7 +54,7 @@ app.use(express.static(path.join(__dirname, 'public')));
       })
     }
   }
-});*/
+});
 
 
 /*这个地方配置路由*/
