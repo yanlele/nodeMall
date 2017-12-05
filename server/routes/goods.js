@@ -3,6 +3,8 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Goods = require('../models/goods');
 
+var url=require('url');
+
 //链接数据库
 mongoose.connect('mongodb://127.0.0.1/001_nodeMall');
 
@@ -28,6 +30,10 @@ mongoose.connection.on('disconnected', () => {
  * sort  排序规则       为0 就是倒叙，为1就是升序
  */
 router.get('/list', (req, res, next) => {
+  console.log(url.parse(req.url,true).query);
+  console.log('____________________');
+  console.log(req.url);
+
   let page = parseInt(req.param('page')) || 1;
   let pageSize = parseInt(req.param('pageSize')) || 8;
   let priceLevel = req.param('priceLevel') || 'all';
