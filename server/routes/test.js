@@ -85,7 +85,7 @@ router.get('/create', (req, res, next) => {
 /*修改
  *
  * */
-//这种办法实际上只能修改一个数据!  updateMany就可以批量修改了
+//这种办法实际上update只能修改一个数据!  updateMany就可以批量修改了
 router.get('/update', (req, res, next) => {
   lele.updateMany({
     'result.size':16
@@ -186,8 +186,6 @@ router.post('/edit',(req,res,next)=>{
           message: '修改失败'
         })
       }
-
-
     }
   })
 });
